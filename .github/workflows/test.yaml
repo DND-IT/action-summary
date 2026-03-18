@@ -21,7 +21,7 @@ jobs:
     name: lint
     if: github.event.action != 'closed' && !startsWith(github.head_ref, 'release-please--')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-go@v5
         with:
@@ -37,7 +37,7 @@ jobs:
     name: test
     if: github.event.action != 'closed' && !startsWith(github.head_ref, 'release-please--')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-go@v5
         with:
@@ -55,7 +55,7 @@ jobs:
     name: integration
     needs: [lint, test]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: actions/setup-go@v5
         with:
@@ -118,7 +118,7 @@ jobs:
     needs: [lint, test]
     if: github.event_name == 'pull_request' && github.event.action != 'closed'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: docker/setup-buildx-action@v3
 
