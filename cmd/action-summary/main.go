@@ -16,7 +16,7 @@ func main() {
 	}
 }
 
-func run() error {
+func run() (err error) {
 	inputString := os.Getenv("INPUT_STRING")
 	inputPath := os.Getenv("INPUT_PATH")
 	maxSizeStr := getEnv("INPUT_MAX_SIZE", "1048576")
@@ -79,7 +79,11 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("failed to open GITHUB_STEP_SUMMARY: %w", err)
 	}
-	defer f.Close()
+	defer func() {
+		if cerr := f.Close(); cerr != nil && err == nil {
+			err = fmt.Errorf("failed to close GITHUB_STEP_SUMMARY: %w", cerr)
+		}
+	}()
 
 	if _, err := f.WriteString(output); err != nil {
 		return fmt.Errorf("failed to write to GITHUB_STEP_SUMMARY: %w", err)
